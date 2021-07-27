@@ -1,0 +1,79 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"><button class="btn btn-success" (click)="showpopup()">Add User</button></div>
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of alluser?.users let i=index">
+                        <th scope="row">{{ i +1}}</th>
+                        <td>{{item.name | titlecase}}</td>
+                        <td>{{item.email}}</td>
+                        <td><button class="btn btn-warning" (click)="userupdate(item.email)">Edit</button>
+                            &nbsp; &nbsp;<button (click)="deleteuser(item.id)" class="btn btn-danger"> Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div [className]="checkpopup ? 'modal fade in' : 'modal fade'" [style.display]="showModal ? 'block' : 'none'"
+        style="opacity: 1;">
+        <div class="modal-dialog  modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <ng-container *ngIf="updateuserid; else elseuserpudateheader">
+                        <h5 class="modal-title" id="exampleModalLabel">Update User</h5>
+                    </ng-container>
+                    <ng-template #elseuserpudateheader>
+                        <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+                    </ng-template>
+
+
+                    <button type="button" class="btn-close" (click)="hidepopup()"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- <form> -->
+                    <!-- <input type="text" value="{{updateuserid}}" class="form-control"> -->
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" #name class="form-control" placeholder="Name"
+                            value="{{Singleuser?.singleuser.name}}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" #email class="form-control" placeholder="Email"
+                            value="{{Singleuser?.singleuser.email}}">
+                        <small *ngIf="updateuserid" class="text-danger"><u><i>Email Id Not Updated</i></u></small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="text" #password class="form-control" placeholder="Password"
+                            value="{{Singleuser?.singleuser.password}}">
+                           <input type="hidden" #id class="form-control" value="{{Singleuser?.singleuser.id}}">
+                    </div>
+                    <ng-container *ngIf="updateuserid; else elseuserupdate">
+                        
+                        <button type="submit" class="btn btn-primary"
+                            (click)="updateuser(name.value,  password.value, id.value )">Submit</button>
+                    </ng-container>
+                    <ng-template #elseuserupdate>
+                        <button type="submit" class="btn btn-primary"
+                            (click)="adduser(name.value, email.value, password.value)">Submit</button>
+                    </ng-template>
+
+
+                    <!-- </form> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
